@@ -10,6 +10,7 @@ import {
   formatBytes, formatDateTime, downloadBlob
 } from '../../utils'
 import { filesService } from '../../services'
+import { buildApiUrl } from '../../utils/apiUrl'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
@@ -35,7 +36,7 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
     catch { toast.error('Download failed') }
   }
 
-  const previewUrl = `/api/files/${file._id}/download`
+  const previewUrl = buildApiUrl(`/files/${file._id}/download`)
 
   const renderPreview = () => {
     if (isImageMime(file.mimeType)) {

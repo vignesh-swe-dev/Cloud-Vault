@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { API_URL } from '../utils/apiUrl'
 import { useAuthStore } from '../store/authStore'
 
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_URL,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 })
@@ -34,7 +35,7 @@ api.interceptors.response.use(
       }
       isRefreshing = true
       try {
-        const { data } = await axios.post('/api/auth/refresh', {}, { withCredentials: true })
+        const { data } = await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true })
         const newToken = data.data.accessToken
         useAuthStore.getState().setAuth(useAuthStore.getState().user!, newToken)
         queue.forEach((p) => p.resolve(newToken))
