@@ -6,7 +6,7 @@
  * In production : VITE_API_URL=https://<backend>.onrender.com/api is baked in
  *                 at build time by Vite.
  */
-export const API_URL: string = import.meta.env.VITE_API_URL || '/api'
+export const API_URL: string = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '')
 
 /**
  * Returns the full URL for a backend API path.
