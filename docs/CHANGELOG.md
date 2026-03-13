@@ -8,3 +8,6 @@
 
 ## [2026-03-12]
 - **Explorer**: Polish folder breadcrumb navigation and deep URL route sync.
+
+## [2026-03-13]
+- **Performance**: Memoize file list sorting computations to prevent re-renders on large folders.
