@@ -11,3 +11,6 @@
 
 ## [2026-03-13]
 - **Performance**: Memoize file list sorting computations to prevent re-renders on large folders.
+
+## [2026-03-14]
+- **Preview**: Add fullscreen toggle and keyboard navigation inside media lightbox preview modal.
