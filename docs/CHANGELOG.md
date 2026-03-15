@@ -14,3 +14,6 @@
 
 ## [2026-03-14]
 - **Preview**: Add fullscreen toggle and keyboard navigation inside media lightbox preview modal.
+
+## [2026-03-15]
+- **Docs**: Document production environment variables and Vercel build configuration.
