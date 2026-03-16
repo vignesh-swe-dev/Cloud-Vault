@@ -17,3 +17,6 @@
 
 ## [2026-03-15]
 - **Docs**: Document production environment variables and Vercel build configuration.
+
+## [2026-03-16]
+- **Tests**: Add component tests for file card action triggers and share modal form validation.
