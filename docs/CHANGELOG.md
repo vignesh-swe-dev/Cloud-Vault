@@ -20,3 +20,6 @@
 
 ## [2026-03-16]
 - **Tests**: Add component tests for file card action triggers and share modal form validation.
+
+## [2026-03-17]
+- **Theme**: Refine dark mode border tokens and accessible high-contrast focus rings.
