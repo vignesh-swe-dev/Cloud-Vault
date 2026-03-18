@@ -23,3 +23,6 @@
 
 ## [2026-03-17]
 - **Theme**: Refine dark mode border tokens and accessible high-contrast focus rings.
+
+## [2026-03-18]
+- **Storage**: Format storage quota bytes with dynamic units (MB/GB) and accurate decimal precision.
