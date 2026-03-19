@@ -26,3 +26,6 @@
 
 ## [2026-03-18]
 - **Storage**: Format storage quota bytes with dynamic units (MB/GB) and accurate decimal precision.
+
+## [2026-03-19]
+- **Shortcuts**: Add keyboard shortcut listeners for / (focus search) and Alt+N (new folder).
