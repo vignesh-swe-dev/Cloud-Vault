@@ -29,3 +29,6 @@
 
 ## [2026-03-19]
 - **Shortcuts**: Add keyboard shortcut listeners for / (focus search) and Alt+N (new folder).
+
+## [2026-03-20]
+- **Build**: Tune rollup manual chunk splitting and verify production artifact optimization.
