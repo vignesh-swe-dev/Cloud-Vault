@@ -10,3 +10,4 @@ uploads/
 *.tsbuildinfo
 coverage/
 .nyc_output/
+
