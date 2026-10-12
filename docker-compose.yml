@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: cloudvault_mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: cloudvault
+      MONGO_INITDB_ROOT_PASSWORD: cloudvault_secret
+      MONGO_INITDB_DATABASE: cloudvault
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
