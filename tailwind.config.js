@@ -48,10 +48,10 @@ export default {
       },
       fontFamily: {
         sans: [
-          '-apple-system', 'BlinkMacSystemFont', 'Inter',
-          'Segoe UI', 'system-ui', 'sans-serif',
+          '-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"',
+          'Inter', '"Helvetica Neue"', 'Segoe UI', 'system-ui', 'sans-serif',
         ],
-        mono: ['SF Mono', 'JetBrains Mono', 'Fira Code', 'monospace'],
+        mono: ['SF Mono', 'Menlo', 'JetBrains Mono', 'Fira Code', 'monospace'],
       },
       boxShadow: {
         'card':      '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)',

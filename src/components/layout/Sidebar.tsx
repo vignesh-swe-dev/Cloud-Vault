@@ -57,8 +57,11 @@ export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; o
       className="cv-sidebar flex flex-col h-full shrink-0 overflow-hidden relative z-10"
       style={{ willChange: 'width' }}
     >
+      {/* macOS window controls (decorative) */}
+      {!collapsed && <div className="mac-dots-row"><span className="mac-dots" /></div>}
+
       {/* ── Logo ── */}
-      <div className="flex items-center gap-2.5 px-4 py-4 border-b border-cv" style={{ minHeight: 52 }}>
+      <div className="flex items-center gap-2.5 px-4 py-3" style={{ minHeight: 44 }}>
         <div
           className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center shrink-0 shadow-vault-sm"
           style={{ background: 'var(--accent)' }}
