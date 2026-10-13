@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import VerifyEmailPage from './pages/VerifyEmailPage'
 import DashboardPage from './pages/DashboardPage'
 import FilesPage from './pages/FilesPage'
 import TrashPage from './pages/TrashPage'
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
         <Route path="/forgot-password" element={<GuestRoute><ForgotPasswordPage /></GuestRoute>} />
         <Route path="/reset-password" element={<GuestRoute><ResetPasswordPage /></GuestRoute>} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/shared/:token" element={<SharedFilePage />} />
       </Route>
 
