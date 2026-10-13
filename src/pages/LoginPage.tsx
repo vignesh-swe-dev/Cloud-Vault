@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Cloud, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../services'
+import OtpStep from '../components/auth/OtpStep'
 import { staggerContainer, staggerItem } from '../animations/variants'
 import toast from 'react-hot-toast'
 
@@ -12,38 +13,43 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [needsVerify, setNeedsVerify] = useState(false)
-  const [resending, setResending] = useState(false)
+  const [otp, setOtp] = useState<{ email: string; purpose: 'signup' | 'login' } | null>(null)
   const { setAuth } = useAuthStore()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setNeedsVerify(false)
     try {
       const { data } = await authService.login({ email, password })
+      if (data.data.otpRequired) {
+        setOtp({ email: data.data.email, purpose: data.data.purpose })
+        toast.success('We emailed you a 6-digit code')
+        return
+      }
       setAuth(data.data.user, data.data.accessToken)
       toast.success(`Welcome back, ${data.data.user.name}!`)
       navigate('/dashboard')
     } catch (err: any) {
-      if (err?.response?.data?.code === 'EMAIL_NOT_VERIFIED') setNeedsVerify(true)
       toast.error(err?.response?.data?.message ?? 'Login failed')
     } finally {
       setLoading(false)
     }
   }
 
-  const resend = async () => {
-    setResending(true)
-    try {
-      await authService.resendVerification(email)
-      toast.success('Verification email sent. Check your inbox.')
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Could not resend email')
-    } finally {
-      setResending(false)
-    }
+  if (otp) {
+    return (
+      <OtpStep
+        email={otp.email}
+        purpose={otp.purpose}
+        onBack={() => setOtp(null)}
+        onSuccess={(user, token) => {
+          setAuth(user, token)
+          toast.success(`Welcome back, ${user.name}!`)
+          navigate('/dashboard')
+        }}
+      />
+    )
   }
 
   return (
@@ -131,16 +137,6 @@ export default function LoginPage() {
               }
             </motion.button>
           </form>
-
-          {needsVerify && (
-            <div className="mt-4 p-3 rounded-lg text-sm text-ink-2" style={{ border: '1px solid var(--border)' }}>
-              Your email isn't verified yet. Check your inbox (and spam) for the link.{' '}
-              <button type="button" onClick={resend} disabled={resending || !email}
-                className="font-medium" style={{ color: 'var(--accent)' }}>
-                {resending ? 'Sending…' : 'Resend email'}
-              </button>
-            </div>
-          )}
 
           <p className="text-center text-sm text-ink-3 mt-5">
             No account?{' '}

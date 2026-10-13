@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Cloud, Eye, EyeOff, Loader2, MailCheck } from 'lucide-react'
+import { Cloud, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../services'
+import OtpStep from '../components/auth/OtpStep'
 import { staggerContainer, staggerItem } from '../animations/variants'
 import toast from 'react-hot-toast'
 
@@ -13,7 +14,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [sentTo, setSentTo] = useState<string | null>(null)
+  const [otpEmail, setOtpEmail] = useState<string | null>(null)
   const { setAuth } = useAuthStore()
   const navigate = useNavigate()
 
@@ -23,9 +24,10 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       const { data } = await authService.register({ name, email, password })
-      if (data.data.verificationRequired) {
-        setSentTo(data.data.email)
-        if (!data.data.emailSent) toast.error(data.message)
+      if (data.data.otpRequired) {
+        setOtpEmail(data.data.email)
+        if (data.data.emailSent === false) toast.error(data.message)
+        else toast.success('We emailed you a 6-digit code')
         return
       }
       setAuth(data.data.user, data.data.accessToken)
@@ -40,18 +42,18 @@ export default function RegisterPage() {
 
   const strength = password.length === 0 ? 0 : password.length < 8 ? 1 : password.length < 12 ? 2 : 3
 
-  if (sentTo) {
+  if (otpEmail) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--bg)' }}>
-        <div className="w-full max-w-sm cv-card p-6 text-center">
-          <MailCheck className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--accent)' }} />
-          <h1 className="text-xl font-bold text-ink-1">Check your email</h1>
-          <p className="text-sm text-ink-3 mt-2">
-            We sent a verification link to <b>{sentTo}</b>. Click it to activate your account, then sign in.
-          </p>
-          <Link to="/login" className="btn-primary w-full py-2.5 mt-5 inline-flex justify-center">Go to sign in</Link>
-        </div>
-      </div>
+      <OtpStep
+        email={otpEmail}
+        purpose="signup"
+        onBack={() => setOtpEmail(null)}
+        onSuccess={(user, token) => {
+          setAuth(user, token)
+          toast.success(`Welcome, ${user.name}!`)
+          navigate('/dashboard')
+        }}
+      />
     )
   }
 

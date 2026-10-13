@@ -47,11 +47,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: [
-          '-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"',
-          'Inter', '"Helvetica Neue"', 'Segoe UI', 'system-ui', 'sans-serif',
-        ],
-        mono: ['SF Mono', 'Menlo', 'JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"SF Mono"', 'Menlo', 'monospace'],
       },
       boxShadow: {
         'card':      '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)',
@@ -74,11 +72,21 @@ export default {
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'slide-in-right': 'slideInRight 0.3s ease-out',
-        'fade-in': 'fadeIn 0.25s ease-out',
+        'slide-in-right': 'slideInRight 0.35s cubic-bezier(0.22,1,0.36,1)',
+        'fade-in': 'fadeIn 0.3s ease-out',
+        'rise': 'rise 0.5s cubic-bezier(0.22,1,0.36,1) both',
+        'pop-in': 'popIn 0.22s cubic-bezier(0.22,1,0.36,1) both',
         'skeleton': 'skeleton 1.5s ease-in-out infinite',
       },
       keyframes: {
+        rise: {
+          from: { opacity: '0', transform: 'translateY(14px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
+        },
+        popIn: {
+          from: { opacity: '0', transform: 'scale(0.96)' },
+          to:   { opacity: '1', transform: 'scale(1)' },
+        },
         slideInRight: {
           from: { transform: 'translateX(20px)', opacity: '0' },
           to:   { transform: 'translateX(0)',    opacity: '1' },

@@ -42,9 +42,10 @@ export default function UploadDrawer() {
     <motion.div
       initial={{ x: 400, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
       exit={{ x: 400, opacity: 0 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="fixed right-0 top-0 h-full w-96 bg-dark-800 border-l border-white/10 z-50 flex flex-col shadow-2xl"
+      style={{ background: 'var(--menu-bg)', WebkitBackdropFilter: 'var(--blur)', backdropFilter: 'var(--blur)' }}
+      className="fixed right-0 top-0 h-full w-96 z-50 flex flex-col shadow-2xl border-l border-cv"
     >
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-cv">
         <h2 className="font-semibold text-lg">Uploads</h2>
         <div className="flex gap-2">
           <button onClick={clearDone} className="btn-ghost text-xs py-1 px-2">Clear done</button>
@@ -59,8 +60,8 @@ export default function UploadDrawer() {
           ${isDragActive ? 'border-vault-500 bg-vault-500/10' : 'border-white/20 hover:border-white/40'}`}
       >
         <input {...getInputProps()} />
-        <Upload className="w-8 h-8 mx-auto mb-2 text-white/40" />
-        <p className="text-sm text-white/50">Drop files here or click to browse</p>
+        <Upload className="w-8 h-8 mx-auto mb-2 text-ink-3" />
+        <p className="text-sm text-ink-3">Drop files here or click to browse</p>
       </div>
 
       {/* Queue */}
@@ -75,9 +76,9 @@ export default function UploadDrawer() {
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{item.file.name}</p>
-                  <p className="text-xs text-white/40">{formatBytes(item.file.size)}</p>
+                  <p className="text-xs text-ink-3">{formatBytes(item.file.size)}</p>
                   {item.status === 'uploading' && (
-                    <div className="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full bg-vault-gradient rounded-full"
                         animate={{ width: `${item.progress}%` }}
@@ -91,9 +92,9 @@ export default function UploadDrawer() {
                   {item.status === 'uploading' && <Loader2 className="w-5 h-5 text-vault-400 animate-spin" />}
                   {item.status === 'done' && <CheckCircle className="w-5 h-5 text-green-400" />}
                   {item.status === 'error' && <XCircle className="w-5 h-5 text-red-400" />}
-                  {item.status === 'pending' && <Loader2 className="w-5 h-5 text-white/30 animate-spin" />}
+                  {item.status === 'pending' && <Loader2 className="w-5 h-5 text-ink-3 animate-spin" />}
                 </div>
-                <button onClick={() => removeItem(item.id)} className="text-white/30 hover:text-white/70 transition-colors">
+                <button onClick={() => removeItem(item.id)} className="text-ink-3 hover:text-ink-1 transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -101,7 +102,7 @@ export default function UploadDrawer() {
           ))}
         </AnimatePresence>
         {items.length === 0 && (
-          <div className="text-center py-10 text-white/30 text-sm">No uploads yet</div>
+          <div className="text-center py-10 text-ink-3 text-sm">No uploads yet</div>
         )}
       </div>
     </motion.div>

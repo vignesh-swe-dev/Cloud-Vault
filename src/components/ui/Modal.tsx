@@ -53,10 +53,10 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', duration: 0.3, bounce: 0.1 }}
-            className={`relative w-full ${maxWidthStyles[maxWidth]} bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-10`}
+            className={`relative w-full ${maxWidthStyles[maxWidth]} bg-surface rounded-2xl shadow-2xl border border-cv overflow-hidden z-10`}
           >
             {(title || description) && (
-              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-start justify-between">
+              <div className="px-6 py-4 border-b border-cv flex items-start justify-between">
                 <div>
                   {title && (
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">

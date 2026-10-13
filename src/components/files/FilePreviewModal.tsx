@@ -12,7 +12,7 @@ import {
 import { filesService } from '../../services'
 import { buildApiUrl } from '../../utils/apiUrl'
 import { useNavigate } from 'react-router-dom'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import FileIcon from './FileIcon'
 
@@ -21,6 +21,21 @@ interface Props { file: CloudFile; onClose: () => void; onShare: () => void }
 export default function FilePreviewModal({ file, onClose, onShare }: Props) {
   const navigate = useNavigate()
   const qc = useQueryClient()
+
+  const { data: downloadUrlData } = useQuery({
+    queryKey: ['file-download-url', file._id],
+    queryFn: async () => {
+      try {
+        const res = await filesService.getDownloadUrl(file._id)
+        return res.data?.data?.url as string
+      } catch {
+        return null
+      }
+    },
+    staleTime: 10 * 60 * 1000,
+  })
+
+  const previewUrl = downloadUrlData || buildApiUrl(`/files/${file._id}/download`)
 
   const deleteMut = useMutation({
     mutationFn: () => filesService.delete(file._id),
@@ -35,8 +50,6 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
     try { const { data } = await filesService.download(file._id); downloadBlob(data, file.name) }
     catch { toast.error('Download failed') }
   }
-
-  const previewUrl = buildApiUrl(`/files/${file._id}/download`)
 
   const renderPreview = () => {
     if (isImageMime(file.mimeType)) {

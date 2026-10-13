@@ -16,7 +16,7 @@ export const FolderCard: React.FC<FolderCardProps> = ({ folder, onOpen, onDelete
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15 }}
       onClick={() => onOpen(folder._id)}
-      className="group relative flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer select-none"
+      className="group relative flex items-center justify-between p-3.5 rounded-xl border border-cv bg-surface hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer select-none"
     >
       <div className="flex items-center gap-3 min-w-0">
         <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">

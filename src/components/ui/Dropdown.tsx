@@ -50,7 +50,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ trigger, items, align = 'rig
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className={`absolute z-30 mt-2 w-48 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/80 dark:border-slate-800 py-1 focus:outline-none ${
+            className={`absolute z-30 mt-2 w-48 rounded-xl bg-surface shadow-xl border border-cv py-1 focus:outline-none ${
               align === 'right' ? 'right-0' : 'left-0'
             }`}
           >
