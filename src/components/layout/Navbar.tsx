@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { Search, Upload, Sun, Moon, Monitor, X, ChevronRight } from 'lucide-react'
+import { Search, Upload, Sun, Moon, Monitor, X, ChevronRight, Menu } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthStore } from '../../store/authStore'
 import { useUploadStore } from '../../store/uploadStore'
@@ -15,7 +15,7 @@ const THEME_OPTIONS = [
   { value: 'system', icon: Monitor, label: 'System' },
 ] as const
 
-export default function Navbar({ breadcrumbs }: { breadcrumbs?: Array<{ label: string; to?: string }> }) {
+export default function Navbar({ breadcrumbs, onMenu }: { breadcrumbs?: Array<{ label: string; to?: string }>; onMenu?: () => void }) {
   const { user, clearAuth } = useAuthStore()
   const { openDrawer } = useUploadStore()
   const { theme, setTheme } = useThemeStore()
@@ -57,6 +57,10 @@ export default function Navbar({ breadcrumbs }: { breadcrumbs?: Array<{ label: s
 
   return (
     <header className="cv-toolbar shrink-0 z-20">
+      <button className="btn-icon md:hidden shrink-0" onClick={onMenu} aria-label="Open menu">
+        <Menu className="w-5 h-5" />
+      </button>
+
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 ? (
         <nav className="breadcrumb flex-1 min-w-0 max-w-xs">
@@ -79,11 +83,11 @@ export default function Navbar({ breadcrumbs }: { breadcrumbs?: Array<{ label: s
           ))}
         </nav>
       ) : (
-        <div className="flex-1" />
+        <div className="flex-1 hidden md:block" />
       )}
 
       {/* Search */}
-      <form onSubmit={handleSearch} className="relative max-w-sm w-full">
+      <form onSubmit={handleSearch} className="relative w-full md:max-w-sm min-w-0 flex-1 md:flex-none">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink-3 pointer-events-none" />
         <input
           value={search}
@@ -106,15 +110,10 @@ export default function Navbar({ breadcrumbs }: { breadcrumbs?: Array<{ label: s
       <div className="cv-sep" />
 
       {/* Upload */}
-      <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={openDrawer}
-        className="btn-primary text-sm py-1.5"
-      >
+      <button onClick={openDrawer} className="btn-primary text-sm py-1.5 shrink-0" aria-label="Upload">
         <Upload className="w-3.5 h-3.5" />
-        <span>Upload</span>
-      </motion.button>
+        <span className="hidden sm:inline">Upload</span>
+      </button>
 
       {/* Theme toggle + profile */}
       <div ref={menuRef} className="flex items-center gap-1 relative">
@@ -131,7 +130,7 @@ export default function Navbar({ breadcrumbs }: { breadcrumbs?: Array<{ label: s
           {themeOpen && (
             <motion.div
               variants={scaleIn} initial="hidden" animate="visible" exit="exit"
-              className="ctx-menu absolute right-10 top-full mt-1.5"
+              className="ctx-menu absolute right-0 sm:right-10 top-full mt-1.5"
             >
               {THEME_OPTIONS.map(({ value, icon: Icon, label }) => (
                 <button

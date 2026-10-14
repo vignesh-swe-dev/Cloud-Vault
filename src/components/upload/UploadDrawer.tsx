@@ -43,7 +43,7 @@ export default function UploadDrawer() {
       initial={{ x: 400, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
       exit={{ x: 400, opacity: 0 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       style={{ background: 'var(--menu-bg)', WebkitBackdropFilter: 'var(--blur)', backdropFilter: 'var(--blur)' }}
-      className="fixed right-0 top-0 h-full w-96 z-50 flex flex-col shadow-2xl border-l border-cv"
+      className="fixed right-0 top-0 h-full w-full sm:w-96 z-50 flex flex-col shadow-2xl border-l border-cv"
     >
       <div className="flex items-center justify-between px-5 py-4 border-b border-cv">
         <h2 className="font-semibold text-lg">Uploads</h2>

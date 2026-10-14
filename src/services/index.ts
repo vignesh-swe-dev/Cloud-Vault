@@ -69,6 +69,7 @@ export const filesService = {
   getContent: (id: string) => api.get(`/files/${id}/content`),
   updateContent: (id: string, content: string, lastModified?: string) =>
     api.put(`/files/${id}/content`, { content, lastModified }),
+  createNote: (data: { name?: string; content?: string; folderId?: string }) => api.post('/files/note', data),
 }
 
 export const foldersService = {

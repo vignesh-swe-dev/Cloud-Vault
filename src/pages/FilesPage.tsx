@@ -1,11 +1,11 @@
 import { useState, useCallback, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams, useSearchParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Grid3X3, List, SortAsc, SortDesc, Trash2, Star, StarOff,
   Download, Share2, Pencil, FolderPlus, FolderOpen, Check, X,
-  ChevronDown, MoreHorizontal, Home, FileText
+  ChevronDown, MoreHorizontal, Home, FileText, StickyNote
 } from 'lucide-react'
 import { filesService, foldersService } from '../services'
 import { staggerContainer, staggerItem, scaleIn } from '../animations/variants'
@@ -31,6 +31,17 @@ export default function FilesPage() {
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search') ?? ''
   const qc = useQueryClient()
+  const navigate = useNavigate()
+
+  const handleNewNote = async () => {
+    try {
+      const { data } = await filesService.createNote({ name: 'Untitled note', folderId })
+      qc.invalidateQueries({ queryKey: ['files'] })
+      navigate(`/editor/${data.data.file._id}`)
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Could not create note')
+    }
+  }
 
   const [view, setView] = useState<'grid' | 'list'>('grid')
   const [sort, setSort] = useState('createdAt')
@@ -254,10 +265,16 @@ export default function FilesPage() {
             )}
           </AnimatePresence>
 
+          {/* New Note */}
+          <button onClick={handleNewNote} className="btn-secondary text-sm py-1.5">
+            <StickyNote className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">New Note</span>
+          </button>
+
           {/* New Folder */}
           <button onClick={() => setShowNewFolder(true)} className="btn-secondary text-sm py-1.5">
             <FolderPlus className="w-3.5 h-3.5" />
-            New Folder
+            <span className="hidden sm:inline">New Folder</span>
           </button>
 
           {/* Sort */}
@@ -375,14 +392,13 @@ export default function FilesPage() {
                   {folders.map(folder => (
                     <motion.div
                       key={folder._id}
-                      whileHover={{ y: -1 }}
                       className="cv-card group flex items-center gap-2.5 py-2.5 px-3 cursor-pointer"
                     >
                       <FolderOpen className="w-6 h-6 shrink-0" style={{ color: '#FF9F0A' }} strokeWidth={1.8} />
                       <span className="text-sm font-medium text-ink-1 truncate flex-1 min-w-0">{folder.name}</span>
                       <button
                         onClick={e => { e.stopPropagation(); deleteFolderMut.mutate(folder._id) }}
-                        className="opacity-0 group-hover:opacity-100 btn-icon w-5 h-5 transition-opacity"
+                        className="opacity-100 md:opacity-0 md:group-hover:opacity-100 btn-icon w-5 h-5 transition-opacity"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -413,7 +429,6 @@ export default function FilesPage() {
                     {files.map(file => (
                       <motion.div
                         key={file._id}
-                        whileHover={{ y: -2 }}
                         onContextMenu={e => openCtx(e, file)}
                         className={`file-card group relative ${selected.has(file._id) ? 'ring-2 ring-accent' : ''}`}
                         style={selected.has(file._id) ? { '--tw-ring-color': 'var(--accent)' } as any : {}}
@@ -424,7 +439,7 @@ export default function FilesPage() {
                           className={`absolute top-2 left-2 w-4.5 h-4.5 rounded-full border transition-all z-10
                             ${selected.has(file._id)
                               ? 'opacity-100 border-none'
-                              : 'opacity-0 group-hover:opacity-100 border-ink-3 bg-surface'
+                              : 'opacity-100 md:opacity-0 md:group-hover:opacity-100 border-ink-3 bg-surface'
                             }`}
                           onClick={e => toggleSelect(file._id, e)}
                         >
@@ -462,7 +477,7 @@ export default function FilesPage() {
                         <p className="text-xs text-ink-3 mt-0.5">{formatBytes(file.size)}</p>
 
                         {/* Hover actions */}
-                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-2 right-2 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={e => { e.stopPropagation(); openCtx(e as any, file) }}
                             className="btn-icon w-6 h-6"
@@ -501,14 +516,14 @@ export default function FilesPage() {
                             <td className="px-4 py-2.5">
                               <div className="flex items-center gap-3">
                                 <FileIcon mimeType={file.mimeType} category={file.category} className="w-7 h-7" />
-                                <span className="text-sm font-medium text-ink-1 truncate max-w-[200px]">{file.name}</span>
+                                <span className="text-sm font-medium text-ink-1 truncate max-w-[140px] sm:max-w-[200px]">{file.name}</span>
                                 {file.isFavorite && <Star className="w-3 h-3 shrink-0" style={{ color: '#FF9F0A', fill: '#FF9F0A' }} />}
                               </div>
                             </td>
                             <td className="px-4 py-2.5 text-sm text-ink-3 hidden md:table-cell">{formatBytes(file.size)}</td>
                             <td className="px-4 py-2.5 text-sm text-ink-3 hidden lg:table-cell">{formatDate(file.updatedAt)}</td>
                             <td className="px-4 py-2.5">
-                              <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                              <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                                 onClick={e => e.stopPropagation()}>
                                 <button onClick={() => handleDownload(file)} className="btn-icon w-6 h-6">
                                   <Download className="w-3.5 h-3.5" />

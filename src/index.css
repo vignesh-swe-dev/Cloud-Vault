@@ -748,4 +748,25 @@
   .cv-card:hover, .file-card:hover, .sidebar-link:not(.active):hover { transform: none !important; }
 }
 
+/* ── Toolbar stacking + no-overlap ── */
+.cv-toolbar { position: relative; z-index: 30; }
+.cv-toolbar > * { flex-shrink: 0; }
+.cv-toolbar > form { flex-shrink: 1; min-width: 0; }
+.ctx-menu { z-index: 50; }
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .cv-toolbar { padding: 0 0.75rem; gap: 0.5rem; }
+  .cv-sep { display: none; }
+  .modal-box { max-width: calc(100vw - 1.5rem); }
+}
+
+/* Touch screens: no sticky hover effects */
+@media (hover: none) {
+  .btn-primary::after { display: none; }
+  .file-card:hover, .cv-card:hover { transform: none; }
+  .sidebar-link:not(.active):hover { transform: none; }
+}
+
+
 

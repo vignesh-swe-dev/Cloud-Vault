@@ -2,11 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import Editor from '@monaco-editor/react'
-import { motion } from 'framer-motion'
 import { Save, ArrowLeft, Download, Circle, Loader2, FileText } from 'lucide-react'
 import { filesService } from '../services'
 import { getLanguageFromMime, downloadBlob, formatBytes } from '../utils'
-import { fadeInDown } from '../animations/variants'
 import toast from 'react-hot-toast'
 
 export default function EditorPage() {
@@ -99,42 +97,31 @@ export default function EditorPage() {
   }
 
   return (
-    <div className="flex flex-col h-full -m-6">
-      {/* Toolbar */}
-      <motion.div variants={fadeInDown} initial="hidden" animate="visible"
-        className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-dark-800/80 backdrop-blur-md shrink-0">
-        <div className="flex items-center gap-3">
+    <div className="flex flex-col -m-3 sm:-m-5" style={{ height: 'calc(100vh - 52px)' }}>
+      <div className="flex items-center justify-between gap-2 px-3 sm:px-5 py-2.5 border-b border-cv shrink-0"
+           style={{ background: 'var(--menu-bg)' }}>
+        <div className="flex items-center gap-2 min-w-0">
           <button onClick={() => navigate(-1)} className="btn-ghost p-2"><ArrowLeft className="w-5 h-5" /></button>
-          <FileText className="w-5 h-5 text-vault-400" />
-          <div>
-            <h1 className="font-semibold text-sm">{file?.name ?? 'New File'}</h1>
-            {file && <p className="text-xs text-white/40">{formatBytes(file.size)} · {language}</p>}
+          <FileText className="w-5 h-5 shrink-0" style={{ color: 'var(--accent)' }} />
+          <div className="min-w-0">
+            <h1 className="font-semibold text-sm text-ink-1 truncate">{file?.name ?? 'New File'}</h1>
+            {file && <p className="text-xs text-ink-3 truncate">{formatBytes(file.size)} · {language}</p>}
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-xs text-white/40">
-            {saving ? (
-              <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving...</>
-            ) : saved ? (
-              <><Circle className="w-2.5 h-2.5 fill-green-400 text-green-400" /> Saved</>
-            ) : (
-              <><Circle className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400" /> Unsaved</>
-            )}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 text-xs text-ink-3">
+            {saving ? (<><Loader2 className="w-3.5 h-3.5 animate-spin" /><span className="hidden sm:inline">Saving…</span></>)
+              : saved ? (<><Circle className="w-2.5 h-2.5 fill-green-400 text-green-400" /><span className="hidden sm:inline">Saved</span></>)
+              : (<><Circle className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400" /><span className="hidden sm:inline">Unsaved</span></>)}
           </div>
-          {file && (
-            <button onClick={handleDownload} className="btn-ghost p-2 text-sm flex items-center gap-1.5">
-              <Download className="w-4 h-4" />
+          {file && <button onClick={handleDownload} className="btn-ghost p-2"><Download className="w-4 h-4" /></button>}
+          {!isNew && (
+            <button onClick={handleManualSave} disabled={saved || saving} className="btn-primary text-sm">
+              <Save className="w-4 h-4" /><span className="hidden sm:inline">Save</span>
             </button>
           )}
-          {!isNew && (
-            <motion.button onClick={handleManualSave} disabled={saved || saving}
-              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="btn-primary flex items-center gap-2 py-2 text-sm disabled:opacity-50">
-              <Save className="w-4 h-4" /> Save
-            </motion.button>
-          )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Monaco Editor */}
       <div className="flex-1 overflow-hidden">
@@ -143,14 +130,14 @@ export default function EditorPage() {
           language={language}
           value={content}
           onChange={handleChange}
-          theme="vs-dark"
+          theme={document.documentElement.classList.contains('dark') ? 'vs-dark' : 'light'}
           options={{
-            fontSize: 14,
+            fontSize: window.innerWidth < 640 ? 13 : 14,
             fontFamily: 'JetBrains Mono, monospace',
             minimap: { enabled: false },
             padding: { top: 16, bottom: 16 },
             scrollBeyondLastLine: false,
-            lineNumbers: 'on',
+            lineNumbers: window.innerWidth < 640 ? 'off' : 'on',
             renderWhitespace: 'selection',
             smoothScrolling: true,
             cursorSmoothCaretAnimation: 'on',
