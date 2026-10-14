@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   Cloud, LayoutDashboard, FolderOpen, Star,
-  Share2, HardDrive, ChevronRight, LogOut, PanelLeftClose, PanelLeft,
+  Share2, HardDrive, ChevronRight, LogOut, PanelLeftClose, PanelLeft, ShieldCheck,
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { authService } from '../../services'
@@ -26,6 +26,7 @@ const bottomLinks = [
 export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const { user, clearAuth } = useAuthStore()
   const navigate = useNavigate()
+  const navLinks = user?.isAdmin ? [...links, { to: '/admin', icon: ShieldCheck, label: 'Users' }] : links
 
   const { data: storageData } = useQuery({
     queryKey: ['storage'],
@@ -97,7 +98,7 @@ export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; o
           )}
         </AnimatePresence>
 
-        {links.map(({ to, icon: Icon, label }) => (
+        {navLinks.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}

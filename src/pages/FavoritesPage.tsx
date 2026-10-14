@@ -20,22 +20,22 @@ export default function FavoritesPage() {
     <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-6">
       <motion.div variants={staggerItem} className="flex items-center gap-3">
         <Star className="w-7 h-7 text-yellow-400 fill-yellow-400" />
-        <h1 className="text-2xl font-bold">Favorites</h1>
+        <h1 className="text-2xl font-bold text-ink-1">Favorites</h1>
       </motion.div>
 
       {files.length === 0 ? (
-        <motion.div variants={staggerItem} className="glass-card text-center py-20">
-          <Star className="w-16 h-16 text-white/20 mx-auto mb-4" />
-          <p className="text-white/40 text-lg">No favorites yet</p>
-          <p className="text-white/25 text-sm mt-1">Star files to find them quickly</p>
+        <motion.div variants={staggerItem} className="cv-card text-center py-20">
+          <Star className="w-16 h-16 text-ink-3 mx-auto mb-4 opacity-40" />
+          <p className="text-ink-2 text-lg">No favorites yet</p>
+          <p className="text-ink-3 text-sm mt-1">Star files to find them quickly</p>
         </motion.div>
       ) : (
         <motion.div variants={staggerItem} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {files.map(file => (
             <motion.div key={file._id} whileHover={{ y: -3 }} className="file-card rounded-xl group" onClick={() => setPreview(file)}>
               <FileIcon mimeType={file.mimeType} category={file.category} className="w-10 h-10 mb-3" />
-              <p className="text-sm font-medium truncate">{file.name}</p>
-              <p className="text-xs text-white/40 mt-1">{formatBytes(file.size)}</p>
+              <p className="text-sm font-medium truncate text-ink-1">{file.name}</p>
+              <p className="text-xs text-ink-3 mt-1">{formatBytes(file.size)}</p>
             </motion.div>
           ))}
         </motion.div>

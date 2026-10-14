@@ -106,3 +106,11 @@ export const sharesService = {
 export const storageService = {
   usage: () => api.get('/storage/usage'),
 }
+
+export const adminService = {
+  users: () => api.get('/admin/users'),
+  userFiles: (id: string) => api.get(`/admin/users/${id}/files`),
+  deleteUser: (id: string) => api.delete(`/admin/users/${id}`),
+  downloadFile: (id: string) => api.get(`/admin/files/${id}/download`, { responseType: 'blob' }),
+  deleteFile: (id: string) => api.delete(`/admin/files/${id}`),
+}

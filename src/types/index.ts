@@ -54,6 +54,7 @@ export interface User {
   email: string
   storageQuota: number
   storageUsed: number
+  isAdmin?: boolean
 }
 
 export interface UploadItem {

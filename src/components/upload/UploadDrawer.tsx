@@ -46,7 +46,7 @@ export default function UploadDrawer() {
       className="fixed right-0 top-0 h-full w-full sm:w-96 z-50 flex flex-col shadow-2xl border-l border-cv"
     >
       <div className="flex items-center justify-between px-5 py-4 border-b border-cv">
-        <h2 className="font-semibold text-lg">Uploads</h2>
+        <h2 className="font-semibold text-lg text-ink-1">Uploads</h2>
         <div className="flex gap-2">
           <button onClick={clearDone} className="btn-ghost text-xs py-1 px-2">Clear done</button>
           <button onClick={closeDrawer} className="btn-ghost p-1"><X className="w-5 h-5" /></button>
@@ -57,7 +57,7 @@ export default function UploadDrawer() {
       <div
         {...getRootProps()}
         className={`mx-4 mt-4 p-6 rounded-xl border-2 border-dashed transition-colors cursor-pointer text-center
-          ${isDragActive ? 'border-vault-500 bg-vault-500/10' : 'border-white/20 hover:border-white/40'}`}
+          ${isDragActive ? 'border-accent bg-accent/10' : 'border-cv hover:border-ink-3'}`}
       >
         <input {...getInputProps()} />
         <Upload className="w-8 h-8 mx-auto mb-2 text-ink-3" />
@@ -71,16 +71,17 @@ export default function UploadDrawer() {
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }}
-              className="glass p-3 rounded-xl"
+              className="cv-card p-3 rounded-xl"
             >
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{item.file.name}</p>
+                  <p className="text-sm font-medium truncate text-ink-1">{item.file.name}</p>
                   <p className="text-xs text-ink-3">{formatBytes(item.file.size)}</p>
                   {item.status === 'uploading' && (
-                    <div className="mt-2 h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 bg-cv rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-vault-gradient rounded-full"
+                        className="h-full rounded-full"
+                        style={{ background: 'var(--accent)' }}
                         animate={{ width: `${item.progress}%` }}
                         transition={{ duration: 0.3 }}
                       />
@@ -89,7 +90,7 @@ export default function UploadDrawer() {
                   {item.status === 'error' && <p className="text-xs text-red-400 mt-1">{item.error}</p>}
                 </div>
                 <div className="shrink-0">
-                  {item.status === 'uploading' && <Loader2 className="w-5 h-5 text-vault-400 animate-spin" />}
+                  {item.status === 'uploading' && <Loader2 className="w-5 h-5 animate-spin" style={{ color: 'var(--accent)' }} />}
                   {item.status === 'done' && <CheckCircle className="w-5 h-5 text-green-400" />}
                   {item.status === 'error' && <XCircle className="w-5 h-5 text-red-400" />}
                   {item.status === 'pending' && <Loader2 className="w-5 h-5 text-ink-3 animate-spin" />}

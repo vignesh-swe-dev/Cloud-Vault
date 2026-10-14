@@ -10,7 +10,7 @@ import {
   formatBytes, formatDateTime, downloadBlob
 } from '../../utils'
 import { filesService } from '../../services'
-import { buildApiUrl } from '../../utils/apiUrl'
+import { buildApiUrl, resolveFileUrl } from '../../utils/apiUrl'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
@@ -35,7 +35,7 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
     staleTime: 10 * 60 * 1000,
   })
 
-  const previewUrl = downloadUrlData || buildApiUrl(`/files/${file._id}/download`)
+  const previewUrl = (downloadUrlData && resolveFileUrl(downloadUrlData)) || buildApiUrl(`/files/${file._id}/download`)
 
   const deleteMut = useMutation({
     mutationFn: () => filesService.permanentDelete(file._id),

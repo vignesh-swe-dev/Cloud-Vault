@@ -48,21 +48,21 @@ export default function ShareModal({ file, onClose }: Props) {
         className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
         onClick={onClose}>
         <motion.div variants={modalContent} initial="hidden" animate="visible" exit="exit"
-          className="glass-card w-full max-w-md" onClick={e => e.stopPropagation()}>
+          className="cv-card p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <Link2 className="w-5 h-5 text-vault-400" />
-              <h2 className="font-semibold text-lg">Share "{file.name}"</h2>
+              <Link2 className="w-5 h-5" style={{ color: 'var(--accent)' }} />
+              <h2 className="font-semibold text-lg text-ink-1">Share "{file.name}"</h2>
             </div>
             <button onClick={onClose} className="btn-ghost p-1"><X className="w-5 h-5" /></button>
           </div>
 
           {shareUrl ? (
             <div className="space-y-4">
-              <p className="text-sm text-white/60">Share link created! Copy and send it.</p>
+              <p className="text-sm text-ink-2">Share link created! Copy and send it.</p>
               <div className="flex gap-2">
-                <input readOnly value={shareUrl} className="input text-sm flex-1" />
+                <input readOnly value={shareUrl} className="cv-input text-sm flex-1" />
                 <button onClick={copyLink} className="btn-primary px-4 py-2 flex items-center gap-2">
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </button>
@@ -72,23 +72,23 @@ export default function ShareModal({ file, onClose }: Props) {
           ) : (
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-white/70 mb-1.5">Password (optional)</label>
+                <label className="block text-sm font-medium text-ink-2 mb-1.5">Password (optional)</label>
                 <div className="relative">
                   <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
-                    placeholder="Leave blank for no password" className="input pr-10" />
-                  <button type="button" onClick={() => setShowPw(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors">
+                    placeholder="Leave blank for no password" className="cv-input pr-10" />
+                  <button type="button" onClick={() => setShowPw(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-3 hover:text-ink-1 transition-colors">
                     {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-white/70 mb-1.5">Expires (optional)</label>
+                <label className="block text-sm font-medium text-ink-2 mb-1.5">Expires (optional)</label>
                 <input type="datetime-local" value={expiresAt} onChange={e => setExpiresAt(e.target.value)}
-                  className="input" min={new Date().toISOString().slice(0, 16)} />
+                  className="cv-input" min={new Date().toISOString().slice(0, 16)} />
               </div>
               <label className="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" checked={allowDownload} onChange={e => setAllowDownload(e.target.checked)} className="accent-violet-500 w-4 h-4" />
-                <span className="text-sm text-white/70">Allow download</span>
+                <span className="text-sm text-ink-2">Allow download</span>
               </label>
               <button onClick={handleCreate} disabled={loading} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Link2 className="w-4 h-4" /> Generate Link</>}
