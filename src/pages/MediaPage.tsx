@@ -43,10 +43,23 @@ export default function MediaPage() {
         <p className="text-sm text-ink-3">Everything you uploaded, from every folder.</p>
       </div>
 
-      <div className="seg-ctrl w-fit max-w-full overflow-x-auto">
+      <div className="inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-cv p-1"
+           style={{ background: 'var(--sidebar)' }} role="tablist">
         {TABS.map(({ key, label, icon: Icon }) => (
-          <button key={key} onClick={() => setTab(key)} className={tab === key ? 'active' : ''}>
-            <Icon className="w-3.5 h-3.5 inline mr-1.5" />{label}
+          <button
+            key={key}
+            role="tab"
+            aria-selected={tab === key}
+            onClick={() => setTab(key)}
+            className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              tab === key
+                ? 'text-ink-1 shadow-sm ring-1 ring-black/5'
+                : 'text-ink-3 hover:text-ink-1'
+            }`}
+            style={tab === key ? { background: 'var(--surface)' } : undefined}
+          >
+            <Icon className="h-4 w-4 shrink-0" style={tab === key ? { color: 'var(--accent)' } : undefined} />
+            <span>{label}</span>
           </button>
         ))}
       </div>
@@ -56,7 +69,10 @@ export default function MediaPage() {
           {Array.from({ length: 10 }).map((_, i) => <div key={i} className="skeleton aspect-square rounded-xl" />)}
         </div>
       ) : files.length === 0 ? (
-        <div className="cv-card text-center py-16 text-sm text-ink-3">Nothing here yet. Upload some files from All Files.</div>
+        <div className="cv-card py-16 text-center">
+          <p className="text-sm font-medium text-ink-1">Nothing here yet</p>
+          <p className="mt-1 text-xs text-ink-3">Upload files from All Files and they will appear here.</p>
+        </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           <AnimatePresence mode="popLayout">

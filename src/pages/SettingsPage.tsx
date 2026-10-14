@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Sun, Moon, Monitor, User, Lock, HardDrive } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { authService } from '../services'
+import { authService, storageService } from '../services'
 import { useAuthStore } from '../store/authStore'
 import { useThemeStore } from '../store/themeStore'
 import { formatBytes } from '../utils'
@@ -44,7 +44,10 @@ export default function SettingsPage() {
     onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Failed'),
   })
 
-  const pct = user ? Math.min((user.storageUsed / user.storageQuota) * 100, 100) : 0
+  const { data: sd } = useQuery({ queryKey: ['storage'], queryFn: storageService.usage })
+  const used = sd?.data?.data?.storageUsed ?? user?.storageUsed ?? 0
+  const quota = sd?.data?.data?.storageQuota ?? user?.storageQuota ?? 0
+  const pct = quota ? Math.min((used / quota) * 100, 100) : 0
   const pwOk = cur && next.length >= 8 && next === confirm
 
   return (
@@ -79,7 +82,7 @@ export default function SettingsPage() {
 
       <Section icon={HardDrive} title="Storage">
         <div className="storage-bar"><div className="storage-fill" style={{ width: `${pct}%` }} /></div>
-        <p className="text-xs text-ink-3">{formatBytes(user?.storageUsed ?? 0)} of {formatBytes(user?.storageQuota ?? 0)} used ({Math.round(pct)}%)</p>
+        <p className="text-xs text-ink-3">{formatBytes(used)} of {formatBytes(quota)} used ({Math.round(pct)}%)</p>
       </Section>
 
       <Section icon={Lock} title="Change password">
