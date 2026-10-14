@@ -104,10 +104,14 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
           <FileIcon mimeType={file.mimeType} category={file.category} className="w-14 h-14 mx-auto mb-4" />
           <p className="text-sm text-ink-2 mb-4">Open in the editor to view and edit this file.</p>
           <button
-            onClick={() => { navigate(`/editor/${file._id}`); onClose() }}
+            onClick={() => {
+              const isNote = file.category === 'text' || file.name.endsWith('.txt') || file.name.endsWith('.md')
+              navigate(isNote ? `/notes/${file._id}` : `/editor/${file._id}`)
+              onClose()
+            }}
             className="btn-primary gap-2"
           >
-            <ExternalLink className="w-4 h-4" /> Open in Editor
+            <ExternalLink className="w-4 h-4" /> Open in {file.category === 'text' || file.name.endsWith('.txt') ? 'Notes' : 'Editor'}
           </button>
         </div>
       )

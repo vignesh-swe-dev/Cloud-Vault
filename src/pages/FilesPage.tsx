@@ -37,7 +37,7 @@ export default function FilesPage() {
     try {
       const { data } = await filesService.createNote({ name: 'Untitled note', folderId })
       qc.invalidateQueries({ queryKey: ['files'] })
-      navigate(`/editor/${data.data.file._id}`)
+      navigate(`/notes/${data.data.file._id}`)
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Could not create note')
     }

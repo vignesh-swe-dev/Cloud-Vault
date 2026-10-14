@@ -591,6 +591,31 @@
   background: transparent !important;
 }
 
+/* ── Ruled Notebook Paper ───────────────────────────────────────────── */
+.note-body {
+  display: block; width: 100%; min-height: 60vh; margin-top: 1rem; resize: none; overflow: hidden;
+  background-color: transparent; border: 0; outline: 0; padding: 0;
+  font-size: 1rem; line-height: 1.75rem; color: var(--ink-2);
+  /* ruled lines, one per text line */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(1.75rem - 1px),
+    color-mix(in srgb, var(--ink-3) 28%, transparent) calc(1.75rem - 1px),
+    color-mix(in srgb, var(--ink-3) 28%, transparent) 1.75rem
+  );
+  background-attachment: local;
+}
+
+.note-paper { position: relative; }
+@media (min-width: 640px) {
+  .note-paper::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: 1.6rem; width: 1px;
+    background: color-mix(in srgb, var(--danger) 35%, transparent);
+  }
+}
+
+
 /* ── Scrollbar for Firefox ──────────────────────────────────────────── */
 * {
   scrollbar-width: thin;

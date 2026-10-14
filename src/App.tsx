@@ -13,6 +13,7 @@ import FilesPage from './pages/FilesPage'
 import FavoritesPage from './pages/FavoritesPage'
 import SharesPage from './pages/SharesPage'
 import EditorPage from './pages/EditorPage'
+import NotePage from './pages/NotePage'
 import SharedFilePage from './pages/SharedFilePage'
 import StoragePage from './pages/StoragePage'
 import MediaPage from './pages/MediaPage'
@@ -49,7 +50,8 @@ export default function App() {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/shares" element={<SharesPage />} />
         <Route path="/storage" element={<StoragePage />} />
-        <Route path="/notes" element={<EditorPage />} />
+        <Route path="/notes" element={<NotePage />} />
+        <Route path="/notes/:id" element={<NotePage />} />
         <Route path="/media" element={<MediaPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/admin" element={<AdminPage />} />

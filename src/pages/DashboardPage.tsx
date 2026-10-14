@@ -66,7 +66,7 @@ export default function DashboardPage() {
   const newNote = async () => {
     try {
       const { data } = await filesService.createNote({ name: 'Untitled note' })
-      navigate(`/editor/${data.data.file._id}`)
+      navigate(`/notes/${data.data.file._id}`)
     } catch (e: any) { toast.error(e?.response?.data?.message ?? 'Could not create note') }
   }
 
