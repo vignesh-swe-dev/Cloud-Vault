@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Shield, Zap, Globe, ArrowRight, FolderOpen, Eye, StickyNote, Check } from 'lucide-react'
 import Logo from '../components/brand/Logo'
@@ -20,10 +20,15 @@ const stats = [
 ]
 
 export default function LandingPage() {
+  const { scrollY } = useScroll()
+  const heroY = useTransform(scrollY, [0, 400], [0, -50])
+  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0.25])
+  const navShadow = useTransform(scrollY, [0, 40], ['0 0 0 rgba(0,0,0,0)', '0 8px 20px -14px rgba(16,24,40,0.35)'])
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-cv" style={{ background: 'var(--surface)' }}>
+      <motion.nav className="sticky top-0 z-50 border-b border-cv" style={{ background: 'var(--surface)', boxShadow: navShadow }}>
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 h-14">
           <Link to="/"><Logo size={28} /></Link>
           <div className="flex items-center gap-2">
@@ -31,29 +36,31 @@ export default function LandingPage() {
             <Link to="/register" className="btn-primary text-sm">Get started</Link>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Hero */}
       <section className="px-4 sm:px-6 pt-16 sm:pt-24 pb-14">
-        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl mx-auto text-center">
-          <motion.div variants={staggerItem}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6 border border-cv"
-            style={{ background: 'var(--surface)', color: 'var(--ink-2)' }}>
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--ok)' }} />
-            Now in Beta — open to everyone
-          </motion.div>
-          <motion.h1 variants={staggerItem} className="text-4xl sm:text-6xl font-bold leading-[1.1] text-ink-1">
-            Your files.<br /><span style={{ color: 'var(--accent)' }}>Everywhere.</span>
-          </motion.h1>
-          <motion.p variants={staggerItem} className="mt-5 text-base sm:text-lg text-ink-2 max-w-xl mx-auto leading-relaxed">
-            A clean, private and fast file manager. Upload, organize, preview, write notes, and
-            find everything from one simple interface.
-          </motion.p>
-          <motion.div variants={staggerItem} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link to="/register" className="btn-primary text-base px-6 py-2.5">
-              Start for free <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link to="/login" className="btn-secondary text-base px-6 py-2.5">Sign in</Link>
+        <motion.div style={{ y: heroY, opacity: heroOpacity }}>
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl mx-auto text-center">
+            <motion.div variants={staggerItem}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6 border border-cv"
+              style={{ background: 'var(--surface)', color: 'var(--ink-2)' }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--ok)' }} />
+              Now in Beta — open to everyone
+            </motion.div>
+            <motion.h1 variants={staggerItem} className="text-4xl sm:text-6xl font-bold leading-[1.1] text-ink-1">
+              Your files.<br /><span style={{ color: 'var(--accent)' }}>Everywhere.</span>
+            </motion.h1>
+            <motion.p variants={staggerItem} className="mt-5 text-base sm:text-lg text-ink-2 max-w-xl mx-auto leading-relaxed">
+              A clean, private and fast file manager. Upload, organize, preview, write notes, and
+              find everything from one simple interface.
+            </motion.p>
+            <motion.div variants={staggerItem} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link to="/register" className="btn-primary text-base px-6 py-2.5">
+                Start for free <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/login" className="btn-secondary text-base px-6 py-2.5">Sign in</Link>
+            </motion.div>
           </motion.div>
         </motion.div>
 

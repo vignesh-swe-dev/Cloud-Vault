@@ -91,21 +91,24 @@ export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; o
           <NavLink
             key={to}
             to={to}
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
             title={collapsed ? label : undefined}
+            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
           >
-            <Icon className="w-4 h-4 shrink-0" strokeWidth={2} />
-            <AnimatePresence>
-              {!collapsed && (
-                <motion.span
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="text-sm whitespace-nowrap overflow-hidden"
-                >
-                  {label}
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="nav-pill"
+                    transition={{ type: 'spring', stiffness: 500, damping: 38 }}
+                  />
+                )}
+                <span className="relative z-10 flex items-center gap-2.5 min-w-0">
+                  <Icon className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  {!collapsed && <span className="text-sm whitespace-nowrap">{label}</span>}
+                </span>
+              </>
+            )}
           </NavLink>
         ))}
 

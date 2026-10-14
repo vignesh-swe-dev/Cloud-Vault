@@ -7,6 +7,7 @@ import { buildApiUrl } from '../utils/apiUrl'
 import { formatBytes } from '../utils'
 import FileIcon from '../components/files/FileIcon'
 import FilePreviewModal from '../components/files/FilePreviewModal'
+import Reveal from '../components/ui/Reveal'
 
 const TABS = [
   { key: 'image', label: 'Images', icon: ImageIcon },
@@ -38,10 +39,12 @@ export default function MediaPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold text-ink-1">Media</h1>
-        <p className="text-sm text-ink-3">Everything you uploaded, from every folder.</p>
-      </div>
+      <Reveal>
+        <div>
+          <h1 className="text-2xl font-bold text-ink-1">Media</h1>
+          <p className="text-sm text-ink-3">Everything you uploaded, from every folder.</p>
+        </div>
+      </Reveal>
 
       <div className="inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-cv p-1"
            style={{ background: 'var(--sidebar)' }} role="tablist">
@@ -74,7 +77,7 @@ export default function MediaPage() {
           <p className="mt-1 text-xs text-ink-3">Upload files from All Files and they will appear here.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 stagger">
           <AnimatePresence mode="popLayout">
             {files.map((f, i) => (
               <motion.button

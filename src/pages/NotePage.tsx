@@ -308,7 +308,7 @@ export default function NotePage() {
         </div>
 
         {/* Notes List */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-1">
+        <div className="flex-1 overflow-y-auto p-2 space-y-1 stagger">
           {notesQ.isLoading ? (
             <div className="flex flex-col items-center justify-center py-12 gap-2 text-ink-3">
               <Loader2 className="w-5 h-5 animate-spin text-accent" />
@@ -335,7 +335,7 @@ export default function NotePage() {
                 <div
                   key={n._id}
                   onClick={() => handleSelectNote(n)}
-                  className={`group relative flex flex-col p-2.5 rounded-xl cursor-pointer text-left transition-all ${
+                  className={`group relative flex flex-col p-2.5 rounded-xl cursor-pointer text-left transition-all row-hover ${
                     isSelected
                       ? 'bg-accent/10 border border-accent/30 text-ink-1 shadow-sm'
                       : 'hover:bg-surface text-ink-2 border border-transparent'

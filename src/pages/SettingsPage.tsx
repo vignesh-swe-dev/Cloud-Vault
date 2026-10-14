@@ -6,6 +6,7 @@ import { authService, storageService } from '../services'
 import { useAuthStore } from '../store/authStore'
 import { useThemeStore } from '../store/themeStore'
 import { formatBytes } from '../utils'
+import Reveal from '../components/ui/Reveal'
 
 const THEMES = [
   { value: 'light', icon: Sun, label: 'Light' },
@@ -13,15 +14,17 @@ const THEMES = [
   { value: 'system', icon: Monitor, label: 'System' },
 ] as const
 
-function Section({ icon: Icon, title, children }: any) {
+function Section({ icon: Icon, title, delay = 0, children }: any) {
   return (
-    <section className="cv-card p-5 space-y-4">
-      <div className="flex items-center gap-2">
-        <Icon className="w-4 h-4 text-ink-3" />
-        <h2 className="font-semibold text-sm text-ink-1">{title}</h2>
-      </div>
-      {children}
-    </section>
+    <Reveal delay={delay}>
+      <section className="cv-card p-5 space-y-4">
+        <div className="flex items-center gap-2">
+          <Icon className="w-4 h-4 text-ink-3" />
+          <h2 className="font-semibold text-sm text-ink-1">{title}</h2>
+        </div>
+        {children}
+      </section>
+    </Reveal>
   )
 }
 
@@ -69,7 +72,7 @@ export default function SettingsPage() {
         </div>
       </Section>
 
-      <Section icon={Sun} title="Appearance">
+      <Section icon={Sun} title="Appearance" delay={0.06}>
         <div className="grid grid-cols-3 gap-2">
           {THEMES.map(({ value, icon: Icon, label }) => (
             <button key={value} onClick={() => setTheme(value)}
@@ -80,12 +83,12 @@ export default function SettingsPage() {
         </div>
       </Section>
 
-      <Section icon={HardDrive} title="Storage">
+      <Section icon={HardDrive} title="Storage" delay={0.12}>
         <div className="storage-bar"><div className="storage-fill" style={{ width: `${pct}%` }} /></div>
         <p className="text-xs text-ink-3">{formatBytes(used)} of {formatBytes(quota)} used ({Math.round(pct)}%)</p>
       </Section>
 
-      <Section icon={Lock} title="Change password">
+      <Section icon={Lock} title="Change password" delay={0.18}>
         <div className="space-y-3">
           <input type="password" className="cv-input" placeholder="Current password" value={cur} onChange={e => setCur(e.target.value)} autoComplete="current-password" />
           <input type="password" className="cv-input" placeholder="New password (min 8 characters)" value={next} onChange={e => setNext(e.target.value)} autoComplete="new-password" />
