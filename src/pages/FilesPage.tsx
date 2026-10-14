@@ -80,8 +80,8 @@ export default function FilesPage() {
   const clearSelected = () => setSelected(new Set())
 
   const deleteMut = useMutation({
-    mutationFn: (id: string) => filesService.delete(id),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); toast.success('Moved to Trash') },
+    mutationFn: (id: string) => filesService.permanentDelete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); qc.invalidateQueries({ queryKey: ['storage'] }); toast.success('File deleted') },
   })
   const favMut = useMutation({
     mutationFn: ({ id, fav }: { id: string; fav: boolean }) => filesService.update(id, { isFavorite: fav }),
@@ -92,8 +92,8 @@ export default function FilesPage() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); setRenameId(null); toast.success('Renamed') },
   })
   const bulkDeleteMut = useMutation({
-    mutationFn: (ids: string[]) => filesService.bulkDelete(ids),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); setSelected(new Set()); toast.success('Moved to Trash') },
+    mutationFn: (ids: string[]) => Promise.all(ids.map(id => filesService.permanentDelete(id))),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); qc.invalidateQueries({ queryKey: ['storage'] }); setSelected(new Set()); toast.success('Files deleted') },
   })
   const createFolderMut = useMutation({
     mutationFn: (name: string) => foldersService.create(name, folderId ?? null),
@@ -210,8 +210,11 @@ export default function FilesPage() {
               <Share2 className="w-3.5 h-3.5" /> Share…
             </button>
             <div className="ctx-sep" />
-            <button className="ctx-item danger" onClick={() => { deleteMut.mutate(ctxMenu.file._id); setCtxMenu(null) }}>
-              <Trash2 className="w-3.5 h-3.5" /> Move to Trash
+            <button className="ctx-item danger" onClick={() => {
+              if (window.confirm('Delete this file permanently?')) deleteMut.mutate(ctxMenu.file._id);
+              setCtxMenu(null);
+            }}>
+              <Trash2 className="w-3.5 h-3.5" /> Delete
             </button>
           </motion.div>
         )}
@@ -252,7 +255,9 @@ export default function FilesPage() {
                 <Check className="w-3.5 h-3.5" />
                 {selected.size} selected
                 <button
-                  onClick={() => bulkDeleteMut.mutate([...selected])}
+                  onClick={() => {
+                    if (window.confirm('Delete these files permanently?')) bulkDeleteMut.mutate([...selected])
+                  }}
                   className="ml-1 px-2 py-0.5 rounded-lg text-xs font-medium"
                   style={{ background: 'var(--danger)', color: '#fff' }}
                 >
@@ -536,7 +541,13 @@ export default function FilesPage() {
                                 <button onClick={() => setShareFile(file)} className="btn-icon w-6 h-6">
                                   <Share2 className="w-3.5 h-3.5" />
                                 </button>
-                                <button onClick={() => deleteMut.mutate(file._id)} className="btn-icon w-6 h-6 hover:text-danger">
+                                <button
+                                  onClick={() => {
+                                    if (window.confirm('Delete this file permanently?')) deleteMut.mutate(file._id)
+                                  }}
+                                  className="btn-icon w-6 h-6 hover:text-danger"
+                                  title="Delete"
+                                >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
                               </div>

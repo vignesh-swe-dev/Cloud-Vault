@@ -10,7 +10,6 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import DashboardPage from './pages/DashboardPage'
 import FilesPage from './pages/FilesPage'
-import TrashPage from './pages/TrashPage'
 import FavoritesPage from './pages/FavoritesPage'
 import SharesPage from './pages/SharesPage'
 import EditorPage from './pages/EditorPage'
@@ -46,7 +45,6 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/files" element={<FilesPage />} />
         <Route path="/files/:folderId" element={<FilesPage />} />
-        <Route path="/trash" element={<TrashPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/shares" element={<SharesPage />} />
         <Route path="/storage" element={<StoragePage />} />

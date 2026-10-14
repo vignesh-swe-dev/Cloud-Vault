@@ -38,8 +38,13 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
   const previewUrl = downloadUrlData || buildApiUrl(`/files/${file._id}/download`)
 
   const deleteMut = useMutation({
-    mutationFn: () => filesService.delete(file._id),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['files'] }); onClose(); toast.success('Moved to Trash') },
+    mutationFn: () => filesService.permanentDelete(file._id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['files'] })
+      qc.invalidateQueries({ queryKey: ['storage'] })
+      onClose()
+      toast.success('File deleted')
+    },
   })
   const favMut = useMutation({
     mutationFn: () => filesService.update(file._id, { isFavorite: !file.isFavorite }),
@@ -181,11 +186,13 @@ export default function FilePreviewModal({ file, onClose, onShare }: Props) {
               }
             </button>
             <button
-              onClick={() => deleteMut.mutate()}
+              onClick={() => {
+                if (window.confirm('Delete this file permanently?')) deleteMut.mutate()
+              }}
               className="btn-secondary text-sm py-1.5 gap-1.5 ml-auto"
               style={{ color: 'var(--danger)' }}
             >
-              <Trash2 className="w-3.5 h-3.5" /> Move to Trash
+              <Trash2 className="w-3.5 h-3.5" /> Delete
             </button>
           </div>
         </motion.div>

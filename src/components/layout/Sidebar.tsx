@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
-  Cloud, LayoutDashboard, FolderOpen, Star, Trash2,
+  Cloud, LayoutDashboard, FolderOpen, Star,
   Share2, HardDrive, ChevronRight, LogOut, PanelLeftClose, PanelLeft,
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
@@ -17,7 +17,6 @@ const links = [
   { to: '/files',      icon: FolderOpen,       label: 'All Files' },
   { to: '/favorites',  icon: Star,             label: 'Favorites' },
   { to: '/shares',     icon: Share2,           label: 'Shared' },
-  { to: '/trash',      icon: Trash2,           label: 'Trash' },
 ]
 
 const bottomLinks = [
