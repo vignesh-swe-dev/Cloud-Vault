@@ -20,76 +20,32 @@ export const authService = {
 export const filesService = {
   list: (params?: Record<string, any>) => api.get('/files', { params }),
   get: (id: string) => api.get(`/files/${id}`),
-  upload: async (
-    payload: FormData | { file: File; folderId?: string | null },
-    onProgress?: (p: number) => void,
-  ) => {
-    let file: File | null = null
-    let folderId: string | null = null
+  upload: async (formData: FormData, onProgress?: (p: number) => void) => {
+    const file = formData.get('file') as File
+    const folderId = (formData.get('folderId') as string) || undefined
+    const mimeType = file.type || 'application/octet-stream'
 
-    if (payload instanceof FormData) {
-      file = payload.get('file') as File
-      folderId = (payload.get('folderId') as string) || null
-    } else {
-      file = payload.file
-      folderId = payload.folderId || null
-    }
+    // 1) ask the backend for a direct upload link
+    const { data } = await api.post('/files/upload-url', { name: file.name, size: file.size, mimeType, folderId })
+    const info = data.data
 
-    if (!file) throw new Error('No file provided')
-
-    try {
-      // Step 1: Initialize upload (check quota and check if S3 presigned URL is available)
-      const { data: initRes } = await api.post('/files/init-upload', {
-        name: file.name,
-        size: file.size,
-        mimeType: file.type || 'application/octet-stream',
-        folderId,
+    // local storage (dev) / mongo: old way through the server
+    if (!info?.direct) {
+      return api.post('/files/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (e) => { if (onProgress && e.total) onProgress(Math.round((e.loaded * 100) / e.total)) },
       })
-
-      if (initRes.data?.mode === 's3' && initRes.data?.uploadUrl) {
-        const { uploadUrl, storageKey, name } = initRes.data
-
-        // Step 2: Upload directly to S3/R2 with vanilla axios (no Authorization header)
-        await axios.put(uploadUrl, file, {
-          headers: {
-            'Content-Type': file.type || 'application/octet-stream',
-          },
-          onUploadProgress: (e) => {
-            if (onProgress && e.total) {
-              onProgress(Math.round((e.loaded * 100) / e.total))
-            }
-          },
-        })
-
-        // Step 3: Complete upload on backend to record in DB
-        return api.post('/files/complete-upload', {
-          name,
-          originalName: file.name,
-          mimeType: file.type || 'application/octet-stream',
-          size: file.size,
-          storageKey,
-          folderId,
-        })
-      }
-    } catch (err: any) {
-      // If quota exceeded (413), fail immediately
-      if (err?.response?.status === 413) throw err
-      // If error is not a fallback case, rethrow
-      if (err?.response?.data?.message) throw err
     }
 
-    // Fallback: local backend multipart upload
-    const fd = payload instanceof FormData ? payload : new FormData()
-    if (!(payload instanceof FormData)) {
-      fd.append('file', file)
-      if (folderId) fd.append('folderId', folderId)
-    }
+    // 2) browser -> S3 directly (plain axios, no cookies or auth header)
+    await axios.put(info.url, file, {
+      headers: { 'Content-Type': info.mimeType },
+      onUploadProgress: (e) => { if (onProgress && e.total) onProgress(Math.round((e.loaded * 100) / e.total)) },
+    })
 
-    return api.post('/files/upload', fd, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (e) => {
-        if (onProgress && e.total) onProgress(Math.round((e.loaded * 100) / e.total))
-      },
+    // 3) tell the backend to save the record
+    return api.post('/files/upload-complete', {
+      storageKey: info.storageKey, name: file.name, size: file.size, mimeType: info.mimeType, folderId,
     })
   },
   download: async (id: string) => {
