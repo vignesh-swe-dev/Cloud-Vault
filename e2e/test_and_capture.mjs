@@ -109,6 +109,20 @@ async function run() {
   await page.screenshot({ path: path.join(screenshotsDir, 'desktop_editor_page.png') });
   console.log('Captured desktop_editor_page.png');
 
+  // Test Media Page
+  await page.goto(`${BASE_URL}/media`);
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: path.join(screenshotsDir, 'desktop_media_page.png') });
+  console.log('Captured desktop_media_page.png');
+
+  // Test Settings Page
+  await page.goto(`${BASE_URL}/settings`);
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: path.join(screenshotsDir, 'desktop_settings_page.png') });
+  console.log('Captured desktop_settings_page.png');
+
   // Storage Page
   await page.goto(`${BASE_URL}/storage`);
   await page.waitForLoadState('networkidle');

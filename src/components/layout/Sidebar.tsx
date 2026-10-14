@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
-  Cloud, LayoutDashboard, FolderOpen, Star,
-  Share2, HardDrive, ChevronRight, LogOut, PanelLeftClose, PanelLeft, ShieldCheck,
+  Cloud, LayoutDashboard, FolderOpen, StickyNote, Image as ImageIcon, Settings,
+  ChevronRight, LogOut, PanelLeftClose, PanelLeft, ShieldCheck,
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { authService } from '../../services'
@@ -13,14 +13,11 @@ import { formatBytes } from '../../utils'
 import toast from 'react-hot-toast'
 
 const links = [
-  { to: '/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/files',      icon: FolderOpen,       label: 'All Files' },
-  { to: '/favorites',  icon: Star,             label: 'Favorites' },
-  { to: '/shares',     icon: Share2,           label: 'Shared' },
-]
-
-const bottomLinks = [
-  { to: '/storage', icon: HardDrive, label: 'Storage' },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/files',     icon: FolderOpen,      label: 'All Files' },
+  { to: '/notes',     icon: StickyNote,      label: 'Notes' },
+  { to: '/media',     icon: ImageIcon,       label: 'Media' },
+  { to: '/settings',  icon: Settings,        label: 'Settings' },
 ]
 
 export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
@@ -120,38 +117,6 @@ export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; o
           </NavLink>
         ))}
 
-        <AnimatePresence>
-          {!collapsed && (
-            <motion.p
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="section-label"
-            >
-              Storage
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        {bottomLinks.map(({ to, icon: Icon, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            title={collapsed ? label : undefined}
-          >
-            <Icon className="w-4 h-4 shrink-0" strokeWidth={2} />
-            <AnimatePresence>
-              {!collapsed && (
-                <motion.span
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="text-sm whitespace-nowrap"
-                >
-                  {label}
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </NavLink>
-        ))}
       </nav>
 
       {/* ── Storage indicator ── */}

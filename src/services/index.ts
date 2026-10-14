@@ -15,6 +15,8 @@ export const authService = {
   resetPassword: (token: string, password: string) => api.post('/auth/reset-password', { token, password }),
   verifyOtp: (email: string, code: string, purpose: 'signup' | 'login') => api.post('/auth/verify-otp', { email, code, purpose }),
   resendOtp: (email: string, purpose: 'signup' | 'login') => api.post('/auth/resend-otp', { email, purpose }),
+  updateProfile: (name: string) => api.patch('/auth/profile', { name }),
+  changePassword: (currentPassword: string, newPassword: string) => api.post('/auth/change-password', { currentPassword, newPassword }),
 }
 
 export const filesService = {
@@ -108,6 +110,7 @@ export const storageService = {
 }
 
 export const adminService = {
+  stats: () => api.get('/admin/stats'),
   users: () => api.get('/admin/users'),
   userFiles: (id: string) => api.get(`/admin/users/${id}/files`),
   deleteUser: (id: string) => api.delete(`/admin/users/${id}`),

@@ -11,3 +11,6 @@ uploads/
 coverage/
 .nyc_output/
 
+
+e2e/screenshots/
+

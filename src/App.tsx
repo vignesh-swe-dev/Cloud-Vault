@@ -15,6 +15,8 @@ import SharesPage from './pages/SharesPage'
 import EditorPage from './pages/EditorPage'
 import SharedFilePage from './pages/SharedFilePage'
 import StoragePage from './pages/StoragePage'
+import MediaPage from './pages/MediaPage'
+import SettingsPage from './pages/SettingsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore()
@@ -47,6 +49,9 @@ export default function App() {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/shares" element={<SharesPage />} />
         <Route path="/storage" element={<StoragePage />} />
+        <Route path="/notes" element={<EditorPage />} />
+        <Route path="/media" element={<MediaPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/editor/:fileId" element={<EditorPage />} />
         <Route path="/editor/new" element={<EditorPage />} />
