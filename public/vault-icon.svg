@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6560fa"/>
-      <stop offset="100%" stop-color="#a855f7"/>
-    </linearGradient>
-  </defs>
-  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+  <rect width="32" height="32" rx="8" fill="url(#g)"/>
+  <path d="M10.5 21.5a4.5 4.5 0 0 1-.6-8.96A6.5 6.5 0 0 1 22.4 11.8 4.9 4.9 0 0 1 22 21.5H10.5Z" fill="#fff" fill-opacity=".96"/>
+  <rect x="13.6" y="15.4" width="4.8" height="4.2" rx="1" fill="#1D4ED8"/>
+  <path d="M14.6 15.4v-1.1a1.4 1.4 0 0 1 2.8 0v1.1" stroke="#1D4ED8" stroke-width="1.3" stroke-linecap="round"/>
 </svg>

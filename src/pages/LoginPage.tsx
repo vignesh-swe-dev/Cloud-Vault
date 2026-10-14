@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Cloud, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
+import Logo from '../components/brand/Logo'
 import { useAuthStore } from '../store/authStore'
 import { authService } from '../services'
 import OtpStep from '../components/auth/OtpStep'
@@ -29,7 +30,7 @@ export default function LoginPage() {
       }
       setAuth(data.data.user, data.data.accessToken)
       toast.success(`Welcome back, ${data.data.user.name}!`)
-      navigate('/dashboard')
+      navigate('/files')
     } catch (err: any) {
       toast.error(err?.response?.data?.message ?? 'Login failed')
     } finally {
@@ -46,7 +47,7 @@ export default function LoginPage() {
         onSuccess={(user, token) => {
           setAuth(user, token)
           toast.success(`Welcome back, ${user.name}!`)
-          navigate('/dashboard')
+          navigate('/files')
         }}
       />
     )
@@ -63,14 +64,8 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <motion.div variants={staggerItem} className="text-center mb-8">
-          <Link to="/" className="inline-flex flex-col items-center gap-3">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-vault-md"
-              style={{ background: 'var(--accent)' }}
-            >
-              <Cloud className="w-7 h-7 text-white" strokeWidth={2} />
-            </div>
-            <span className="font-bold text-xl text-ink-1">CloudVault</span>
+          <Link to="/" className="inline-block">
+            <Logo size={44} />
           </Link>
           <h1 className="text-2xl font-bold text-ink-1 mt-4">Sign in</h1>
           <p className="text-sm text-ink-3 mt-1">Welcome back — your files are waiting.</p>

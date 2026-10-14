@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Cloud, Loader2, Eye, EyeOff, CheckCircle } from 'lucide-react'
+import { Loader2, Eye, EyeOff, CheckCircle } from 'lucide-react'
+import { LogoMark } from '../components/brand/Logo'
 import { authService } from '../services'
 import { staggerContainer, staggerItem } from '../animations/variants'
 import toast from 'react-hot-toast'
@@ -32,8 +33,8 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen flex items-center justify-center px-4 bg-app">
       <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="w-full max-w-md">
         <motion.div variants={staggerItem} className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-vault-sm" style={{ background: 'var(--accent)' }}><Cloud className="w-6 h-6 text-white" /></div>
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
+            <LogoMark size={28} />
             <span className="font-bold text-xl text-ink-1">CloudVault</span>
           </Link>
           <h1 className="text-3xl font-bold text-ink-1">Set new password</h1>

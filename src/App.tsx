@@ -8,7 +8,6 @@ import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import AdminPage from './pages/AdminPage'
-import DashboardPage from './pages/DashboardPage'
 import FilesPage from './pages/FilesPage'
 import FavoritesPage from './pages/FavoritesPage'
 import SharesPage from './pages/SharesPage'
@@ -26,7 +25,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function GuestRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore()
-  return !isAuthenticated ? <>{children}</> : <Navigate to="/dashboard" replace />
+  return !isAuthenticated ? <>{children}</> : <Navigate to="/files" replace />
 }
 
 export default function App() {
@@ -44,7 +43,7 @@ export default function App() {
 
       {/* Protected app routes */}
       <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<Navigate to="/files" replace />} />
         <Route path="/files" element={<FilesPage />} />
         <Route path="/files/:folderId" element={<FilesPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />

@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
-  Cloud, LayoutDashboard, FolderOpen, StickyNote, Image as ImageIcon, Settings,
+  FolderOpen, StickyNote, Image as ImageIcon, Settings,
   ChevronRight, LogOut, PanelLeftClose, PanelLeft, ShieldCheck,
 } from 'lucide-react'
+import { LogoMark } from '../brand/Logo'
 import { useAuthStore } from '../../store/authStore'
 import { authService } from '../../services'
 import { sidebarVariants } from '../../animations/variants'
@@ -13,7 +14,6 @@ import { formatBytes } from '../../utils'
 import toast from 'react-hot-toast'
 
 const links = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/files',     icon: FolderOpen,      label: 'All Files' },
   { to: '/notes',     icon: StickyNote,      label: 'Notes' },
   { to: '/media',     icon: ImageIcon,       label: 'Media' },
@@ -54,17 +54,9 @@ export default function Sidebar({ collapsed, onToggle }: { collapsed: boolean; o
       className="cv-sidebar flex flex-col h-full shrink-0 overflow-hidden relative z-10"
       style={{ willChange: 'width' }}
     >
-      {/* macOS window controls (decorative) */}
-      {!collapsed && <div className="mac-dots-row"><span className="mac-dots" /></div>}
-
       {/* ── Logo ── */}
       <div className="flex items-center gap-2.5 px-4 py-3" style={{ minHeight: 44 }}>
-        <div
-          className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center shrink-0 shadow-vault-sm"
-          style={{ background: 'var(--accent)' }}
-        >
-          <Cloud className="w-4 h-4 text-white" strokeWidth={2.2} />
-        </div>
+        <LogoMark size={28} />
         <AnimatePresence>
           {!collapsed && (
             <motion.div

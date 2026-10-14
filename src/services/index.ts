@@ -116,4 +116,5 @@ export const adminService = {
   deleteUser: (id: string) => api.delete(`/admin/users/${id}`),
   downloadFile: (id: string) => api.get(`/admin/files/${id}/download`, { responseType: 'blob' }),
   deleteFile: (id: string) => api.delete(`/admin/files/${id}`),
+  fileContent: (id: string) => api.get(`/admin/files/${id}/content`),
 }

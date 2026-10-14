@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Cloud, Download, Lock, Clock, Loader2, AlertTriangle } from 'lucide-react'
+import { Download, Lock, Clock, Loader2, AlertTriangle } from 'lucide-react'
+import { LogoMark } from '../components/brand/Logo'
 import { sharesService } from '../services'
 import { formatBytes, formatDateTime, downloadBlob } from '../utils'
 import { staggerContainer, staggerItem } from '../animations/variants'
@@ -44,9 +45,7 @@ export default function SharedFilePage() {
   return (
     <div className="min-h-screen flex flex-col bg-app">
       <nav className="flex items-center gap-2 px-8 py-4 border-b border-cv bg-surface/80 backdrop-blur-md">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-          <Cloud className="w-5 h-5 text-white" />
-        </div>
+        <LogoMark size={28} />
         <span className="font-bold text-lg text-ink-1">CloudVault</span>
         <span className="text-ink-3 ml-2 text-sm">Shared File</span>
       </nav>
